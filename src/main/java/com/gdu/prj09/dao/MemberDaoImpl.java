@@ -1,12 +1,11 @@
 package com.gdu.prj09.dao;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Map;
 
-import com.gdu.prj09.dto.AddressDto;
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.gdu.prj09.dto.AddressDto;
 import com.gdu.prj09.dto.MemberDto;
 
 import lombok.RequiredArgsConstructor;
@@ -19,14 +18,13 @@ public class MemberDaoImpl implements MemberDao {
   public final static String NS = "com.gdu.prj09.mybatis.mapper.member_t.";
 
   @Override
-  public int insertMember(MemberDto member){
+  public int insertMember(MemberDto member) {
     return sqlSessionTemplate.insert(NS + "insertMember", member);
   }
 
   @Override
   public int insertAddress(AddressDto address) {
-        return sqlSessionTemplate.insert(NS + "insertAddress", address);
-
+    return sqlSessionTemplate.insert(NS + "insertAddress", address);
   }
 
   @Override
@@ -49,20 +47,27 @@ public class MemberDaoImpl implements MemberDao {
 
   @Override
   public int getTotalMemberCount() {
-    // TODO Auto-generated method stub
-    return 0;
+    return sqlSessionTemplate.selectOne(NS + "getTotalMemberCount");
   }
 
   @Override
-  public List<MemberDto> getMemberList(Map<String, Object> map) {
-    // TODO Auto-generated method stub
-    return null;
+  public List<AddressDto> getMemberList(Map<String, Object> map) {
+    return sqlSessionTemplate.selectList(NS + "getMemberList", map);
   }
 
   @Override
   public MemberDto getMemberByNo(int memberNo) {
-    // TODO Auto-generated method stub
-    return null;
+    return sqlSessionTemplate.selectOne(NS + "getMemberByNo", memberNo);
+  }
+
+  @Override
+  public int getTotalAddressCountByNo(int memberNo) {
+    return sqlSessionTemplate.selectOne(NS + "getTotalAddressCountByNo", memberNo);
+  }
+
+  @Override
+  public List<AddressDto> getAddressListByNo(Map<String, Object> map) {
+    return sqlSessionTemplate.selectList(NS + "getAddressListByNo", map);
   }
 
 }

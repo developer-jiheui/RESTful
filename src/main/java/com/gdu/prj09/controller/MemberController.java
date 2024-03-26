@@ -1,19 +1,22 @@
 package com.gdu.prj09.controller;
 
-import com.gdu.prj09.dto.AddressDto;
-import org.springframework.http.HttpStatus;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.html.Option;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.gdu.prj09.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 /*
  * RESTful
@@ -39,17 +42,42 @@ import java.util.Map;
 @Controller
 public class MemberController {
 
-    private final MemberService memberService;
+  private final MemberService memberService;
 
-    @GetMapping("/admin/member.do")
-    public void adminMember() {
-        // 반환타입이 void 인 경우 주소를 JSP 경로로 인식한다.
-        // /admin/member.do =====> /WEB-INF/views/admin/member.jsp
-    }
+  @GetMapping("/admin/member.do")
+  public void adminMember(HttpServletRequest request) {
+    // 반환타입이 void 인 경우 주소를 JSP 경로로 인식한다.
+    // /admin/member.do =====> /WEB-INF/views/admin/member.jsp
 
-    @PostMapping(value = "/members", produces = "application/json")
-    public ResponseEntity<Map<String, Object>> registerMember(@RequestBody Map<String, Object> map, HttpServletResponse response) {
-        return memberService.registerMember(map, response);
-    }
+    System.out.println("CONTEXT PATH : " + request.getContextPath());
+  }
+
+  @PostMapping(value="/members", produces="application/json")
+  public ResponseEntity<Map<String, Object>> registerMember(@RequestBody Map<String, Object> map
+                                                          , HttpServletResponse response) {
+    return memberService.registerMember(map, response);
+  }
+
+  @GetMapping(value="/members/page/{p}/display/{dp}", produces="application/json")
+  public ResponseEntity<Map<String, Object>> getMembers(@PathVariable(value="p", required=false) Optional<String> optPage
+                                                      , @PathVariable(value="dp", required=false) Optional<String> optDisplay) {
+    int page = Integer.parseInt(optPage.orElse("1"));
+    int display = Integer.parseInt(optDisplay.orElse("20"));
+
+    return memberService.getMembers(page, display);
+  }
+
+  @GetMapping(value = "/members/{memberNo}", produces = "application/json")
+  public ResponseEntity<Map<String, Object>> getMemberByNo(@PathVariable(value = "memberNo", required = false)Optional<String> opt){
+    int memberNo = Integer.parseInt(opt.orElse("0"));
+    System.out.println("GOT IN ");
+    return memberService.getMemberByNo(memberNo);
+  }
+
+
+
+
+
+
 
 }
