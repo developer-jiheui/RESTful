@@ -5,11 +5,13 @@ import java.util.Map;
 
 import com.gdu.prj09.dto.AddressDto;
 import com.gdu.prj09.dto.MemberDto;
+import oracle.net.resolver.AddrResolution;
 
 public interface MemberDao {
   int insertMember(MemberDto member);
   int insertAddress(AddressDto address);
-  int updateMember(MemberDto member);
+  int updateMember(Map<String, Object>map);
+  int updateAddress(Map<String, Object>map);
   int deleteMember(int memberNo);
   int deleteMembers(List<String> memberNoList);
   int getTotalMemberCount();

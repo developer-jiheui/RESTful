@@ -57,6 +57,24 @@
     )
   </insert>
 
+  <update id="updateMember"
+          parameterType="Map">
+    UPDATE MEMBER_T
+    SET NAME = #{name}
+    , GENDER = #{gender}
+    WHERE MEMBER_NO = #{memberNo}
+  </update>
+
+  <update id="updateAddress"
+          parameterType="map">
+    UPDATE ADDRESS_T
+    SET ZONECODE = #{zonecode}
+    , ADDRESS = #{address}
+    , DETAIL_ADDRESS = #{detailAddress}
+    , EXTRA_ADDRESS = #{extraAddress}
+    WHERE MEMBER_NO = #{memberNo}
+  </update>
+
   <select id="getTotalMemberCount"
           resultType="int">
     SELECT COUNT(*)
@@ -98,5 +116,11 @@
              WHERE MEMBER_NO = #{memberNo})
      WHERE RN BETWEEN #{begin} AND #{end}
   </select>
+
+  <delete id="deleteMember">
+    DELETE FROM MEMBER_T
+    WHERE MEMBER_NO = #{memberNo}
+
+  </delete>
 
 </mapper>
